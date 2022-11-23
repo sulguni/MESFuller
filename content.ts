@@ -1,7 +1,7 @@
-let prevWrong, prevWrongPercent, prevSkipped, prevSkippedPercent, prevScore
+let prevWrong: number, prevWrongPercent: number, prevSkipped: number, prevSkippedPercent: number, prevScore: number
 
 chrome.runtime.onMessage.addListener(
-  function (request, sender, sendResponse) {
+  function (request) {
     const writing = request.write
     console.log(writing ? 'Writing...' : 'Erasing...')
     const chart = document.querySelector('svg.recharts-surface')
@@ -29,32 +29,29 @@ chrome.runtime.onMessage.addListener(
     const nums = document.querySelectorAll('span.jss55')
     const persents = document.querySelectorAll('span.jss56')
     if (writing) {
-      let correct = nums[0].innerHTML
-      correct = +correct
-      let wrong = nums[1].innerHTML
-      wrong = +wrong
-      prevWrong = wrong
-      let skipped = nums[3].innerHTML
-      skipped = +skipped
-      prevSkipped = skipped
-      nums[0].innerHTML = (correct + wrong + skipped).toString()
-      nums[1].innerHTML = 0
-      nums[3].innerHTML = 0
+      let correct = nums[0].innerHTML, correctNum = +correct,
+       wrong = nums[1].innerHTML, wrongNum = +wrong,
+       skipped = nums[3].innerHTML, skippedNum = +skipped
+      prevWrong = wrongNum
+      prevSkipped = skippedNum
+      nums[0].innerHTML = (correctNum + wrongNum + skippedNum).toString()
+      nums[1].innerHTML = '0'
+      nums[3].innerHTML = '0'
       wrong = persents[1].innerHTML.replace('(', '').replace(')', '').replace('%', '')
-      wrong = +wrong
-      prevWrongPercent = wrong
+      wrongNum = +wrong
+      prevWrongPercent = wrongNum
       skipped = persents[3].innerHTML.replace('(', '').replace(')', '').replace('%', '')
-      skipped = +skipped
-      prevSkippedPercent = skipped
+      skippedNum = +skipped
+      prevSkippedPercent = skippedNum
       persents[0].innerHTML = '(100%)'
       persents[1].innerHTML = '(0%)'
       persents[3].innerHTML = '(0%)'
     } else {
       let correct = nums[0].innerHTML
-      correct = +correct
-      correct -= prevWrong
-      correct -= prevSkipped
-      nums[0].innerHTML = correct.toString()
+      let correctNum = +correct
+      correctNum -= prevWrong
+      correctNum -= prevSkipped
+      nums[0].innerHTML = correctNum.toString()
       nums[1].innerHTML = prevWrong.toString()
       nums[3].innerHTML = prevSkipped.toString()
       persents[0].innerHTML = '(' + (100 - prevWrongPercent - prevSkippedPercent).toString() + '%)'
@@ -62,16 +59,18 @@ chrome.runtime.onMessage.addListener(
       persents[3].innerHTML = '(' + prevSkippedPercent.toString() + '%)'
     }
     const score = document.querySelector('span.jss50')
-    if (writing) {
-      let score1 = score.innerHTML
-      prevScore = +score1.split('/')[0]
-      score1 = score1.split('/')[1] + '/' + score1.split('/')[1];
-      score.innerHTML = score1
-    } else {
-      let score1 = score.innerHTML
-      score1 = prevScore.toString() + '/' + score1.split('/')[1]
-      score.innerHTML = score1
+    if (score) {
+      if (writing) {
+        let score1 = score.innerHTML
+        prevScore = +score1.split('/')[0]
+        score1 = score1.split('/')[1] + '/' + score1.split('/')[1];
+        score.innerHTML = score1
+      } else {
+        let score1 = score.innerHTML
+        score1 = prevScore.toString() + '/' + score1.split('/')[1]
+        score.innerHTML = score1
+      }
     }
-    sendResponse({ result: true })
+    return false
   }
-);
+)
