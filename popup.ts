@@ -7,7 +7,7 @@ function registerButtons() {
     revertButton.addEventListener("click", revert)
   }
 }
-function send(write) {
+function send(write: boolean) {
   chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
     const tab = tabs[0], url = tab.url, id = tab.id
     if (url && id) {
