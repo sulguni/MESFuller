@@ -1,0 +1,15 @@
+{
+  "name": "mesfuller",
+  "version": "0.0.2",
+  "description": "Google Chrome extension, that makes your MES tests apear fully correct",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kirik985/MESFuller.git"
+  },
+  "author": "Kirik985",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Kirik985/MESFuller/issues"
+  },
+  "homepage": "https://github.com/Kirik985/MESFuller#readme"
+}

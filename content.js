@@ -2,7 +2,6 @@ let prevWrong, prevWrongPercent, prevSkipped, prevSkippedPercent, prevScore
 
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {
-    let success = false
     const writing = request.write
     console.log(writing ? 'Writing...' : 'Erasing...')
     const chart = document.querySelector('svg.recharts-surface')
@@ -15,7 +14,6 @@ chrome.runtime.onMessage.addListener(
           if (path) {
             path.setAttribute('fill', writing ? '#6dd16b' : '#ff8b57')
             path.setAttribute('stroke', writing ? '#6dd16b' : '#ff8b57')
-            success = true
           }
         }
         const g1 = graph.querySelectorAll('g.recharts-layer.recharts-pie-sector')[3]
@@ -24,7 +22,6 @@ chrome.runtime.onMessage.addListener(
           if (path) {
             path.setAttribute('fill', writing ? '#6dd16b' : '#eaeaea')
             path.setAttribute('stroke', writing ? '#6dd16b' : '#eaeaea')
-            success &&= true
           }
         }
       }
@@ -75,7 +72,6 @@ chrome.runtime.onMessage.addListener(
       score1 = prevScore.toString() + '/' + score1.split('/')[1]
       score.innerHTML = score1
     }
-    success &&= true
-    sendResponse({ result: success })
+    sendResponse({ result: true })
   }
 );
