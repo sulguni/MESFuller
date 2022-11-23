@@ -8,7 +8,7 @@
     },
     "content_scripts": [
         {
-            "js": ["build/content.ts"],
+            "js": ["build/content.js"],
             "matches": [
                 "https://uchebnik.mos.ru/*"
             ]
