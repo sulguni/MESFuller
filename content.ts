@@ -26,39 +26,61 @@ chrome.runtime.onMessage.addListener(
         }
       }
     }
-    const nums = document.querySelectorAll('span.jss55')
-    const persents = document.querySelectorAll('span.jss56')
+    const correctDotNode = document.querySelector("div[style=\"background-color: rgb(109, 209, 107);\"]")
+    const correctTextNode = correctDotNode?.parentNode?.children[1]
+    if (!correctTextNode) {
+      console.error('Correct text not found!')
+      return false
+    }
+    const wrongDotNode = document.querySelector("div[style=\"background-color: rgb(109, 209, 107);\"]")
+    const wrongTextNode = wrongDotNode?.parentNode?.children[1]
+    if (!wrongTextNode) {
+      console.error('Correct text not found!')
+      return false
+    }
+    const skippedDotNode = document.querySelector("div[style=\"background-color: rgb(234, 234, 234);\"]")
+    const skippedTextNode = skippedDotNode?.parentNode?.children[1]
+    if (!skippedTextNode) {
+      console.error('Correct text not found!')
+      return false
+    }
     if (writing) {
-      let correct = nums[0].innerHTML, correctNum = +correct,
-       wrong = nums[1].innerHTML, wrongNum = +wrong,
-       skipped = nums[3].innerHTML, skippedNum = +skipped
+      let correct = correctTextNode.children[1].innerHTML, correctNum = +correct,
+       wrong = wrongTextNode.children[1].innerHTML, wrongNum = +wrong,
+       skipped = skippedTextNode.children[1].innerHTML, skippedNum = +skipped
       prevWrong = wrongNum
       prevSkipped = skippedNum
-      nums[0].innerHTML = (correctNum + wrongNum + skippedNum).toString()
-      nums[1].innerHTML = '0'
-      nums[3].innerHTML = '0'
-      wrong = persents[1].innerHTML.replace('(', '').replace(')', '').replace('%', '')
+      correctTextNode.children[1].innerHTML = (correctNum + wrongNum + skippedNum).toString()
+      wrongTextNode.children[1].innerHTML = '0'
+      skippedTextNode.children[1].innerHTML = '0'
+      wrong = wrongTextNode.children[2].innerHTML.replace('(', '').replace(')', '').replace('%', '')
       wrongNum = +wrong
       prevWrongPercent = wrongNum
-      skipped = persents[3].innerHTML.replace('(', '').replace(')', '').replace('%', '')
+      skipped = skippedTextNode.children[2].innerHTML.replace('(', '').replace(')', '').replace('%', '')
       skippedNum = +skipped
       prevSkippedPercent = skippedNum
-      persents[0].innerHTML = '(100%)'
-      persents[1].innerHTML = '(0%)'
-      persents[3].innerHTML = '(0%)'
+      correctTextNode.children[2].innerHTML = '(100%)'
+      wrongTextNode.children[2].innerHTML = '(0%)'
+      skippedTextNode.children[2].innerHTML = '(0%)'
     } else {
-      let correct = nums[0].innerHTML
+      let correct = correctTextNode.children[1].innerHTML
       let correctNum = +correct
       correctNum -= prevWrong
       correctNum -= prevSkipped
-      nums[0].innerHTML = correctNum.toString()
-      nums[1].innerHTML = prevWrong.toString()
-      nums[3].innerHTML = prevSkipped.toString()
-      persents[0].innerHTML = '(' + (100 - prevWrongPercent - prevSkippedPercent).toString() + '%)'
-      persents[1].innerHTML = '(' + prevWrongPercent.toString() + '%)'
-      persents[3].innerHTML = '(' + prevSkippedPercent.toString() + '%)'
+      correctTextNode.children[1].innerHTML = correctNum.toString()
+      wrongTextNode.children[1].innerHTML = prevWrong.toString()
+      skippedTextNode.children[1].innerHTML = prevSkipped.toString()
+      correctTextNode.children[2].innerHTML = '(' + (100 - prevWrongPercent - prevSkippedPercent).toString() + '%)'
+      wrongTextNode.children[2].innerHTML = '(' + prevWrongPercent.toString() + '%)'
+      skippedTextNode.children[2].innerHTML = '(' + prevSkippedPercent.toString() + '%)'
     }
-    const score = document.querySelector('span.jss50')
+    let score
+    for (const span of document.querySelectorAll("span")) {
+      if (span.innerHTML.includes("Результат теста в баллах")) {
+        score = span
+        break
+      }
+    } 
     if (score) {
       if (writing) {
         let score1 = score.innerHTML
