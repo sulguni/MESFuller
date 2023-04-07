@@ -15,8 +15,5 @@
   "bugs": {
     "url": "https://github.com/Kirik985/MESFuller/issues"
   },
-  "homepage": "https://github.com/Kirik985/MESFuller#readme",
-  "devDependencies": {
-    "@types/jquery": "^3.5.16"
-  }
+  "homepage": "https://github.com/Kirik985/MESFuller#readme"
 }

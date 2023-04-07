@@ -30,19 +30,19 @@ chrome.runtime.onMessage.addListener(
     const correctTextNode = correctDotNode?.parentNode?.children[1]
     if (!correctTextNode) {
       console.error('Correct text not found!')
-      return false
+      return
     }
-    const wrongDotNode = document.querySelector("div[style=\"background-color: rgb(109, 209, 107);\"]")
+    const wrongDotNode = document.querySelector("div[style=\"background-color: rgb(255, 139, 87);\"]")
     const wrongTextNode = wrongDotNode?.parentNode?.children[1]
     if (!wrongTextNode) {
-      console.error('Correct text not found!')
-      return false
+      console.error('Wrong text not found!')
+      return
     }
     const skippedDotNode = document.querySelector("div[style=\"background-color: rgb(234, 234, 234);\"]")
     const skippedTextNode = skippedDotNode?.parentNode?.children[1]
     if (!skippedTextNode) {
-      console.error('Correct text not found!')
-      return false
+      console.error('Skippeed text not found!')
+      return
     }
     if (writing) {
       let correct = correctTextNode.children[1].innerHTML, correctNum = +correct,
@@ -80,7 +80,8 @@ chrome.runtime.onMessage.addListener(
         score = span
         break
       }
-    } 
+    }
+    score = score?.parentElement?.children[0]
     if (score) {
       if (writing) {
         let score1 = score.innerHTML
